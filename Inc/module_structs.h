@@ -5,8 +5,8 @@
 #include "luos.h"
 #include "luos_od.h"
 
-#define MIN 0
-#define MAX 1
+#define MINI 0
+#define MAXI 1
 
 /**
  * \struct timed_update_t
