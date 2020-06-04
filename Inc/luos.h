@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 #ifndef LUOS_H
 #define LUOS_H
 
@@ -7,28 +11,28 @@
 #include "luos_od.h"
 #include "streaming.h"
 
-/**
+    /**
  * \fn void luos_init(void)
  * \brief Initialisation of Luos.
  *
  */
-void luos_init(void);
+    void luos_init(void);
 
-/**
+    /**
  * \fn void luos_loop(void)
  * \brief loop of Luos.
  *
  */
-void luos_loop(void);
+    void luos_loop(void);
 
-/**
+    /**
  * \fn void luos_modules_clear(void)
  * \brief Completely reset the list of virtual modules.
  *
  */
-void luos_modules_clear(void);
+    void luos_modules_clear(void);
 
-/**
+    /**
  * \fn module_t* luos_module_create(MOD_CB mod_cb, unsigned char type, unsigned char *alias)
  * \brief Initialisation of the module.
  *
@@ -39,18 +43,18 @@ void luos_modules_clear(void);
  * \return module object pointer.
  *
  */
-module_t* luos_module_create(MOD_CB mod_cb, unsigned char type, const char *alias, char *firm_revision);
+    module_t *luos_module_create(MOD_CB mod_cb, unsigned char type, const char *alias, char *firm_revision);
 
-/**
+    /**
  * \fn void luos_module_enable_rt(module_t*module)
  * \brief Enable real time callback mode.
  *
  * \param module module to enable.
  *
  */
-void luos_module_enable_rt(module_t *module);
+    void luos_module_enable_rt(module_t *module);
 
-/**
+    /**
  * \fn unsigned char luos_send(module_t* module, msg_t *msg)
  * \brief  Send message function.
  *
@@ -59,9 +63,9 @@ void luos_module_enable_rt(module_t *module);
  *
  * \return send or not
  */
-unsigned char luos_send(module_t *module, msg_t *msg);
+    unsigned char luos_send(module_t *module, msg_t *msg);
 
-/**
+    /**
  * \fn unsigned char luos_send_data(module_t* module, msg_t*msg, void* bin_data, unsigned int size)
  * \brief  Send message with big datas into multiple chunk.
  *
@@ -72,9 +76,9 @@ unsigned char luos_send(module_t *module, msg_t *msg);
  *
  * \return send or not
  */
-unsigned char luos_send_data(module_t *module, msg_t *msg, void *bin_data, unsigned short size);
+    unsigned char luos_send_data(module_t *module, msg_t *msg, void *bin_data, unsigned short size);
 
-/**
+    /**
  * \fn unsigned char luos_send_streaming(module_t *module, msg_t *msg, streaming_channel_t *streaming)
  * \brief  Send datas of a streaming channel.
  *
@@ -84,9 +88,9 @@ unsigned char luos_send_data(module_t *module, msg_t *msg, void *bin_data, unsig
  *
  * \return send or not
  */
-unsigned char luos_send_streaming(module_t *module, msg_t *msg, streaming_channel_t *stream);
+    unsigned char luos_send_streaming(module_t *module, msg_t *msg, streaming_channel_t *stream);
 
-/**
+    /**
  * \fn unsigned char luos_receive_data(module_t* module, msg_t* msg, void* bin_data, unsigned int* size)
  * \brief  Retrieve a multi chunk data
  *
@@ -97,9 +101,9 @@ unsigned char luos_send_streaming(module_t *module, msg_t *msg, streaming_channe
  *
  * \return reception finish or not
  */
-unsigned char luos_receive_data(module_t *module, msg_t *msg, void *bin_data);
+    unsigned char luos_receive_data(module_t *module, msg_t *msg, void *bin_data);
 
-/**
+    /**
  * \fn nsigned char luos_receive_streaming(module_t *module, msg_t *msg, streaming_channel_t streaming)
  * \brief  Receive a streaming channel datas
  *
@@ -109,9 +113,9 @@ unsigned char luos_receive_data(module_t *module, msg_t *msg, void *bin_data);
  *
  * \return reception finish or not
  */
-unsigned char luos_receive_streaming(module_t *module, msg_t *msg, streaming_channel_t *stream);
+    unsigned char luos_receive_streaming(module_t *module, msg_t *msg, streaming_channel_t *stream);
 
-/**
+    /**
  * \fn msg_t* luos_read(module_t* module)
  * \brief  get a received message from a specific module.
  *
@@ -119,9 +123,9 @@ unsigned char luos_receive_streaming(module_t *module, msg_t *msg, streaming_cha
  *
  * \return the received message pointer
  */
-msg_t *luos_read(module_t *module);
+    msg_t *luos_read(module_t *module);
 
-/**
+    /**
  * \fn msg_t* luos_read_from(module_t* module, short id)
  * \brief  get a received message from a specific id to a specific module.
  *
@@ -130,17 +134,17 @@ msg_t *luos_read(module_t *module);
  *
  * \return the received message pointer
  */
-msg_t *luos_read_from(module_t *module, short id);
+    msg_t *luos_read_from(module_t *module, short id);
 
-/**
+    /**
  * \fn char luos_message_available(void)
  * \brief how many messages are available
  *
  * \return the number of message received.
  */
-char luos_message_available(void);
+    char luos_message_available(void);
 
-/**
+    /**
  * \fn void luos_save_alias(module_t* module, char* alias)
  * \brief  Save Alias in EEprom.
  *
@@ -148,9 +152,9 @@ char luos_message_available(void);
  * \param name string.
  *
  */
-void luos_save_alias(module_t *module, char *alias);
+    void luos_save_alias(module_t *module, char *alias);
 
-/**
+    /**
  * \fn void luos_set_baudrate(module_t* module, uint32_t baudrate)
  * \brief  Setup the entire luos network baudrate .
  *
@@ -158,6 +162,9 @@ void luos_save_alias(module_t *module, char *alias);
  * \param new baudrate.
  *
  */
-void luos_set_baudrate(module_t *module, uint32_t baudrate);
+    void luos_set_baudrate(module_t *module, uint32_t baudrate);
 
 #endif /* LUOS_H */
+#ifdef __cplusplus
+};
+#endif
