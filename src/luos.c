@@ -149,8 +149,7 @@ void luos_cb(vm_t *vm, msg_t *msg)
     if (module == 0)
     {
         // module overwrited, it seem to be possible if ring_buffer overflow.
-        while (1)
-            ;
+        while (1);
     }
     if (luos_msg_handler((module_t *)module, msg, (msg_t *)&luos_pub_msg))
     {
@@ -252,9 +251,15 @@ void auto_update_manager(void)
 
 void luos_init(void)
 {
+
     module_number = 0;
     node_init();
     robus_init(luos_cb);
+
+    /*pinMode(10,OUTPUT);
+    digitalWrite(10,HIGH);
+    delay(1000);
+    digitalWrite(10,LOW);*/
 }
 
 void luos_loop(void)

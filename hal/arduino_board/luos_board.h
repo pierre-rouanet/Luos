@@ -1,6 +1,8 @@
 #ifndef __LUOS_BOARD_H
 #define __LUOS_BOARD_H
 
+#include <Arduino.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -61,6 +63,7 @@ extern "C"
   {
     //use millis function of arduino
     //return HAL_GetTick();
+    return millis();
   }
 #ifdef __cplusplus
 };
