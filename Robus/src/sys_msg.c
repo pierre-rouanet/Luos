@@ -166,7 +166,7 @@ unsigned char transmit(unsigned char *data, unsigned short size)
         ctx.collision = FALSE;
         return 1;
     }
-    ctx.tx_lock = TRUE;
+    HAL_LockTx(TRUE);
     // Try to detect a collision during the "col_check_data_num" first bytes
     if (hal_transmit(data, col_check_data_num))
     {

@@ -115,7 +115,7 @@ void timeout(void)
     {
         ctx.status.rx_timeout = TRUE;
     }
-    ctx.tx_lock = FALSE;
+    HAL_LockTx(FALSE);
     flush();
 }
 
@@ -143,7 +143,7 @@ static unsigned short crc_val = 0;
  */
 void get_header(volatile unsigned char *data)
 {
-    ctx.tx_lock = TRUE;
+    HAL_LockTx(TRUE);
     // Catch a byte.
     CURRENTMSG.header.unmap[data_count++] = *data;
 
