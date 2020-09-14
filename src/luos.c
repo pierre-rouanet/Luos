@@ -1,5 +1,5 @@
 #include "luos.h"
-#include "luos_board.h"
+#include "hal.h"
 #include <stdio.h>
 #include "message_mngr.h"
 
@@ -156,18 +156,18 @@ void luos_cb(vm_t *vm, msg_t *msg)
         luos_module_pointer = (module_t *)module;
         return;
     }
-    // L0 message management
-    int pub_type = node_msg_handler((module_t *)module, msg, (msg_t *)&luos_pub_msg);
-    if (pub_type == NODE_LED)
-    {
-        return;
-    }
-    if (pub_type != LUOS_PROTOCOL_NB)
-    {
-        luos_module_pointer = (module_t *)module;
-        luos_pub = pub_type;
-        return;
-    }
+//    // L0 message management
+//    int pub_type = node_msg_handler((module_t *)module, msg, (msg_t *)&luos_pub_msg);
+//    if (pub_type == NODE_LED)
+//    {
+//        return;
+//    }
+//    if (pub_type != LUOS_PROTOCOL_NB)
+//    {
+//        luos_module_pointer = (module_t *)module;
+//        luos_pub = pub_type;
+//        return;
+//    }
     if ((module->rt >= 1) & (module->mod_cb != 0))
     {
         module->mod_cb((module_t *)module, msg);
@@ -252,7 +252,7 @@ void auto_update_manager(void)
 void luos_init(void)
 {
     module_number = 0;
-    node_init();
+    //node_init();
     robus_init(luos_cb);
 }
 
@@ -281,7 +281,7 @@ void luos_loop(void)
     }
     // manage timed auto update
     auto_update_manager();
-    node_loop();
+    //node_loop();
 }
 
 void luos_modules_clear(void)
