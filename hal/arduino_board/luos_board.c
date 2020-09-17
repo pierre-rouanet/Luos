@@ -20,7 +20,7 @@ int node_msg_handler(module_t *module, msg_t *input, msg_t *output)
 
 void status_led(char state)
 {
-    digitalWrite(LED_BUILTIN,(state!=0));
+    digitalWrite(LED_BUILTIN,(state!=0)); //we use the Arduino builtin led
 }
 
 void node_init(void)
@@ -71,7 +71,7 @@ char read_alias(unsigned short local_id, char *alias)
  */
 void node_disable_irq(void)
 {
-    //__disable_irq();
+    noInterrupts();
 }
 
 /**
@@ -82,5 +82,5 @@ void node_disable_irq(void)
  */
 void node_enable_irq(void)
 {
-    //__enable_irq();
+    interrupts();
 }

@@ -349,7 +349,9 @@ void luos_module_enable_rt(module_t *module)
 
 unsigned char luos_send(module_t *module, msg_t *msg)
 {
+    
     return robus_send(module->vm, msg);
+    
 }
 
 unsigned char luos_send_data(module_t *module, msg_t *msg, void *bin_data, unsigned short size)

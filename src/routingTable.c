@@ -279,17 +279,18 @@ void detect_modules(module_t *module)
     unsigned char i = 0;
     // clear network detection state and all previous info.
     flush_route_table();
+
     // Starts the topology detection.
     int nb_mod = robus_topology_detection(module->vm);
+         
     if (nb_mod > MAX_MODULES_NUMBER - 1)
         nb_mod = MAX_MODULES_NUMBER - 1;
 
     // Then, asks for introduction for every found modules.
-    int
-    try
-        = 0;
+    int try= 0;
     int last_id = bigest_id();
-    while ((last_id < nb_mod) && (try < nb_mod))
+     
+    while ((last_id < nb_mod) || (try < nb_mod))
     {
         intro_msg.header.cmd = IDENTIFY_CMD;
         intro_msg.header.target_mode = IDACK;
@@ -305,7 +306,9 @@ void detect_modules(module_t *module)
             nb_mod = last_id;
             break;
         }
+    
         last_id = bigest_id();
+        
     }
     for (int id = 1; id <= nb_mod; id++)
     {
