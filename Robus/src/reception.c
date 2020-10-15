@@ -56,10 +56,15 @@ void Recep_GetHeader(volatile unsigned char *data)
     ctx.tx_lock = true;
     // Catch a byte.
     MsgAlloc_SetData(*data);
+
+    if (data_count == 0)
+    {
+        crc_val = 0xFFFF;
+    }
+    //
     data_count++;
-
+    LuosHAL_ComputeCRC((unsigned char *)data, 1, (unsigned char *)&crc_val);
     // Check if we have all we need.
-
     if (data_count == 3)
     {
         keep = Recep_NodeConcerned((header_t *)&current_msg->header);
@@ -92,8 +97,6 @@ void Recep_GetHeader(volatile unsigned char *data)
             }
             if (keep)
             {
-                // start crc computation
-                LuosHAL_ComputeCRC((unsigned char *)current_msg->stream, sizeof(header_t), (unsigned char *)&crc_val);
                 if (data_size)
                 {
                     MsgAlloc_ValidHeader();
