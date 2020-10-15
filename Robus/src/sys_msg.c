@@ -49,11 +49,10 @@ void Transmit_SendAck(void)
 uint8_t Transmit_Process(uint8_t *data, uint16_t size)
 {
     const int col_check_data_num = 5;
-    uint16_t crc_tx_ini = 0xFFFF;
     // wait tx unlock
     Transmit_WaitUnlockTx();
     // compute the CRC
-    memcpy(&data[size - 2],&crc_tx_ini,2);
+    LuosHAL_ResetCRC(&data[size - 2]);
     LuosHAL_ComputeCRC(data, size - 2, &data[size - 2]);
     ctx.collision = FALSE;
     // Enable TX

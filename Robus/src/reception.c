@@ -59,7 +59,7 @@ void Recep_GetHeader(volatile unsigned char *data)
 
     if (data_count == 0)
     {
-        crc_val = 0xFFFF;
+        LuosHAL_ResetCRC(&crc_val);
     }
     //
     data_count++;
