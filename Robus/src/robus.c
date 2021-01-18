@@ -193,7 +193,7 @@ ack_restart:
         // timer proportional to ID
         if (ll_container->id > 1)
         {
-            Robus_DelayUs(10*ll_container->id - 1);
+            Robus_DelayUs((uint32_t)((ll_container->id - 1)*RetryCollision));
         }
     }
     if(*ll_container->ll_stat.max_collision_retry < RetryCollision)
@@ -238,7 +238,7 @@ ack_restart:
                 if (nbr_nak_retry < NBR_NAK_RETRY)
                 {
                     Recep_Timeout();
-                    Robus_DelayUs(10*nbr_nak_retry);
+                    Robus_DelayUs((uint32_t)(10*nbr_nak_retry));
                     goto ack_restart;
                 }
                 else
@@ -466,9 +466,9 @@ node_t *Robus_GetNode(void)
  * @param None
  * @return Node pointer
  ******************************************************************************/
-void Robus_DelayUs(uint16_t delay)
+void Robus_DelayUs(uint32_t delay)
 {
-    uint32_t timeout = (MCUFREQ/1000000)*delay;
+    uint32_t timeout = ((MCUFREQ/1000000)*delay)+1;
     uint32_t i = 0;
     while(i < timeout)
     {
