@@ -65,7 +65,7 @@ void Robus_Init(memory_stats_t *memory_stats)
     ctx.tx.lock = FALSE;
     // Save luos baudrate
     baudrate = DEFAULTBAUDRATE;
-    
+
     // Init reception
     Recep_Init();
 
@@ -139,6 +139,19 @@ void Robus_ContainersClear(void)
  ******************************************************************************/
 error_return_t Robus_SendMsg(ll_container_t *ll_container, msg_t *msg)
 {
+    uint16_t crc_val = 0xFFFF;
+    // Prepare the message
+    // Set protocol revision and source ID on the message
+    msg->header.protocol = PROTOCOL_REVISION;
+    if (ll_container->id != 0)
+    {
+        msg->header.source = ll_container->id;
+    }
+    else
+    {
+        msg->header.source = ctx.node.node_id;
+    }
+
     // Compute the full message size based on the header size info.
     uint16_t data_size = 0;
     if (msg->header.size > MAX_DATA_MSG_SIZE)
@@ -150,18 +163,16 @@ error_return_t Robus_SendMsg(ll_container_t *ll_container, msg_t *msg)
         data_size = msg->header.size;
     }
     uint16_t full_size = sizeof(header_t) + data_size;
-    // Set protocol revision and source ID on the message
-    msg->header.protocol = PROTOCOL_REVISION;
-    if (ll_container->id != 0)
-    {
-        msg->header.source = ll_container->id;
-    }
-    else
-    {
-        msg->header.source = ctx.node.node_id;
-    }
     // Add the CRC to the total size of the message
     full_size += 2;
+
+    // compute the CRC
+    for (uint16_t i = 0; i < full_size - 2; i++)
+    {
+        LuosHAL_ComputeCRC(&msg->stream[i], (uint8_t *)&crc_val);
+    }
+    msg->stream[full_size - 2] = (uint8_t)(crc_val);
+    msg->stream[full_size - 1] = (uint8_t)(crc_val >> 8);
 
     //try to send msg computed
     error_return_t result = SUCCEED;
@@ -185,7 +196,7 @@ ack_restart:
         Transmit_WaitUnlockTx();
         //max collision possible
         RetryCollision++;
-        if(RetryCollision > NBR_NAK_RETRY)
+        if (RetryCollision > NBR_NAK_RETRY)
         {
             result = FAILED;
             break;
@@ -196,7 +207,7 @@ ack_restart:
             Robus_DelayUs((uint32_t)((ll_container->id - 1)*RetryCollision));
         }
     }
-    if(*ll_container->ll_stat.max_collision_retry < RetryCollision)
+    if (*ll_container->ll_stat.max_collision_retry < RetryCollision)
     {
         *ll_container->ll_stat.max_collision_retry = RetryCollision;
     }
@@ -250,7 +261,7 @@ ack_restart:
             }
             ctx.ack = 0;
         }
-        if(*ll_container->ll_stat.max_nak_retry < nbr_nak_retry)
+        if (*ll_container->ll_stat.max_nak_retry < nbr_nak_retry)
         {
             *ll_container->ll_stat.max_nak_retry = nbr_nak_retry;
         }
