@@ -249,7 +249,6 @@ ack_restart:
                 }
                 if (nbr_nak_retry < NBR_NAK_RETRY)
                 {
-                    Recep_Timeout();
                     Robus_DelayUs((uint32_t)(10*nbr_nak_retry));
                     goto ack_restart;
                 }
@@ -480,7 +479,7 @@ node_t *Robus_GetNode(void)
  ******************************************************************************/
 void Robus_DelayUs(uint32_t delay)
 {
-    uint32_t timeout = ((MCUFREQ/1000000)*delay)+1;
+    uint32_t timeout = (((MCUFREQ/2)/1000000)*delay)+1;
     uint32_t i = 0;
     while(i < timeout)
     {
