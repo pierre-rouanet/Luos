@@ -163,6 +163,8 @@ void Recep_GetData(volatile uint8_t *data)
             }
             MsgAlloc_InvalidMsg();
         }
+        ctx.rx.callback = Recep_Drop;
+        return;
     }
     data_count++;
 }
@@ -225,7 +227,7 @@ void Recep_Drop(volatile uint8_t *data)
  ******************************************************************************/
 void Recep_Timeout(void)
 {
-    if (ctx.rx.callback != Recep_GetHeader)
+    if ((ctx.rx.callback != Recep_GetHeader)&&(ctx.rx.callback != Recep_Drop))
     {
         ctx.rx.status.rx_timeout = TRUE;
     }
